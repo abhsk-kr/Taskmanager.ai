@@ -1,6 +1,8 @@
 # Team Task Manager
 
-A full-stack task management application with team collaboration features, built with React, Express, Prisma, and SQLite.
+A full-stack task management application with team collaboration features, built with React, Express, Prisma, and MongoDB.
+
+🔗 **Live Demo:** [https://taskmanager-ethara.up.railway.app/login](https://taskmanager-ethara.up.railway.app/login)
 
 ## Features
 
@@ -18,7 +20,7 @@ A full-stack task management application with team collaboration features, built
 |------------|-------------|
 | Frontend   | React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, dnd-kit, Recharts |
 | Backend    | Express, TypeScript, Prisma ORM, Zod validation, JWT, bcrypt |
-| Database   | SQLite (via Prisma) |
+| Database   | MongoDB (via Prisma) |
 
 ## Getting Started
 
