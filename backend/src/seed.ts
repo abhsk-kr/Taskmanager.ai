@@ -4,11 +4,22 @@ import { hashPassword } from "./utils/password.js";
 const prisma = new PrismaClient();
 
 async function seed() {
+  const existingAdmin = await prisma.user.findUnique({ where: { email: "admin@example.com" } });
+  const existingMember = await prisma.user.findUnique({ where: { email: "member@example.com" } });
+
+  if (existingAdmin && existingMember) {
+    console.log("Seed data already exists, skipping");
+    await prisma.$disconnect();
+    return;
+  }
+
   const adminPassword = await hashPassword("Admin1234");
   const memberPassword = await hashPassword("Member1234");
 
-  const admin = await prisma.user.create({
-    data: {
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@example.com" },
+    update: { name: "Admin User", password: adminPassword, role: "ADMIN" },
+    create: {
       name: "Admin User",
       email: "admin@example.com",
       password: adminPassword,
@@ -16,14 +27,26 @@ async function seed() {
     },
   });
 
-  const member = await prisma.user.create({
-    data: {
+  const member = await prisma.user.upsert({
+    where: { email: "member@example.com" },
+    update: { name: "John Member", password: memberPassword, role: "MEMBER" },
+    create: {
       name: "John Member",
       email: "member@example.com",
       password: memberPassword,
       role: "MEMBER",
     },
   });
+
+  const existingProject = await prisma.project.findFirst({
+    where: { title: "Sample Project", ownerId: admin.id },
+  });
+
+  if (existingProject) {
+    console.log("Seed data already exists, skipping");
+    await prisma.$disconnect();
+    return;
+  }
 
   const project = await prisma.project.create({
     data: {
