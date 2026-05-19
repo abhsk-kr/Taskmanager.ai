@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String   @unique
   password  String
@@ -25,12 +25,12 @@ model User {
 }
 
 model Project {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   status      String   @default("ACTIVE")
   deadline    DateTime?
-  ownerId     String
+  ownerId     String   @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -43,13 +43,13 @@ model Project {
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   status      String   @default("TODO")
   priority    String   @default("MEDIUM")
-  assigneeId  String?
-  projectId   String
+  assigneeId  String?  @db.ObjectId
+  projectId   String   @db.ObjectId
   dueDate     DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -61,25 +61,26 @@ model Task {
 }
 
 model ProjectMember {
-  userId    String
-  projectId String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  projectId String   @db.ObjectId
   role      String   @default("MEMBER")
   joinedAt  DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id])
   project Project @relation(fields: [projectId], references: [id])
 
-  @@id([userId, projectId])
+  @@unique([userId, projectId])
 }
 
 model Notification {
-  id        String   @id @default(uuid())
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   title     String
   message   String
   read      Boolean  @default(false)
-  taskId    String?
-  projectId String?
+  taskId    String?  @db.ObjectId
+  projectId String?  @db.ObjectId
   createdAt DateTime @default(now())
 
   user    User     @relation(fields: [userId], references: [id])
@@ -88,13 +89,13 @@ model Notification {
 }
 
 model ActivityLog {
-  id        String   @id @default(uuid())
-  actorId   String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  actorId   String   @db.ObjectId
   action    String
   target    String
   targetId  String?
-  taskId    String?
-  projectId String?
+  taskId    String?  @db.ObjectId
+  projectId String?  @db.ObjectId
   createdAt DateTime @default(now())
 
   actor User  @relation(fields: [actorId], references: [id])
@@ -102,9 +103,9 @@ model ActivityLog {
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   token     String   @unique
-  userId    String
+  userId    String   @db.ObjectId
   expiresAt DateTime
   createdAt DateTime @default(now())
 
