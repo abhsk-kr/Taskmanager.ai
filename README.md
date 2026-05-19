@@ -54,6 +54,13 @@ npm run prisma:seed
 
 Seeds the database with sample users, projects, and tasks.
 
+### Login Credentials
+
+| Role   | Email              | Password     |
+|--------|--------------------|--------------|
+| Admin  | admin@example.com  | Admin1234    |
+| Member | member@example.com | Member1234   |
+
 ## Project Structure
 
 ```
