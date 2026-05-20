@@ -46,6 +46,29 @@ export default function Login() {
             <p className="text-[#94A3B8] text-sm mt-1">Sign in to your account</p>
           </div>
 
+          <div className="rounded-lg border border-[#6366F1]/30 bg-[#6366F1]/5 p-4 mb-6">
+            <p className="text-xs font-semibold text-[#6366F1] mb-2 tracking-wide uppercase">Admin Access</p>
+            <div className="space-y-1.5 text-xs text-[#64748B]">
+              <button
+                type="button"
+                onClick={() => { setEmail('admin@example.com'); setPassword('Admin1234'); }}
+                className="w-full text-left px-2 py-1.5 rounded hover:bg-[#6366F1]/10 transition-colors"
+              >
+                <span className="text-[#94A3B8]">Email:</span>{' '}
+                <span className="text-[#F1F5F9] font-mono">admin@example.com</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setEmail('admin@example.com'); setPassword('Admin1234'); }}
+                className="w-full text-left px-2 py-1.5 rounded hover:bg-[#6366F1]/10 transition-colors"
+              >
+                <span className="text-[#94A3B8]">Password:</span>{' '}
+                <span className="text-[#F1F5F9] font-mono">Admin1234</span>
+              </button>
+            </div>
+            <p className="text-[10px] text-[#64748B] mt-2">Click to auto-fill credentials</p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-[#94A3B8] mb-1.5">Email</label>
@@ -83,14 +106,6 @@ export default function Login() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
-          <div className="rounded-lg border border-[#2D3248] bg-[#0F1117]/50 p-3">
-            <p className="text-xs font-medium text-[#94A3B8] mb-2">Demo Credentials</p>
-            <div className="space-y-1 text-xs text-[#64748B]">
-              <p>Admin: <span className="text-[#94A3B8]">admin@example.com</span> / <span className="text-[#94A3B8]">Admin1234</span></p>
-              <p>Member: <span className="text-[#94A3B8]">member@example.com</span> / <span className="text-[#94A3B8]">Member1234</span></p>
-            </div>
-          </div>
 
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-[#2D3248]" />
