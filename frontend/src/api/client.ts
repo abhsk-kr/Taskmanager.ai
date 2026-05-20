@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || (
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000/api'
+    : 'https://taskmanagerai-production.up.railway.app/api'
+);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: API_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -22,7 +28,7 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         try {
-          const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/auth/refresh`, { refreshToken });
+          const { data } = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
           localStorage.setItem('accessToken', data.accessToken);
           localStorage.setItem('refreshToken', data.refreshToken);
           originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
