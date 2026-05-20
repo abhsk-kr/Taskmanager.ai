@@ -84,6 +84,14 @@ export default function Login() {
             </button>
           </form>
 
+          <div className="rounded-lg border border-[#2D3248] bg-[#0F1117]/50 p-3">
+            <p className="text-xs font-medium text-[#94A3B8] mb-2">Demo Credentials</p>
+            <div className="space-y-1 text-xs text-[#64748B]">
+              <p>Admin: <span className="text-[#94A3B8]">admin@example.com</span> / <span className="text-[#94A3B8]">Admin1234</span></p>
+              <p>Member: <span className="text-[#94A3B8]">member@example.com</span> / <span className="text-[#94A3B8]">Member1234</span></p>
+            </div>
+          </div>
+
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-[#2D3248]" />
             <span className="text-sm text-[#94A3B8]">or</span>
