@@ -12,3 +12,4 @@
 [service.variables]
   NODE_ENV = "production"
   JWT_EXPIRES_IN = "7d"
+  DATA_DIR = "/data"

@@ -2,7 +2,7 @@ const initSqlJs = require('sql.js');
 const path = require('path');
 const fs = require('fs-extra');
 
-const dbDir = path.join(__dirname, '../../data');
+const dbDir = process.env.DATA_DIR || path.join(__dirname, '../../data');
 const dbPath = path.join(dbDir, 'taskmanager.db');
 
 let _sqlDb;
