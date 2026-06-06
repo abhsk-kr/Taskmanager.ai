@@ -13,8 +13,8 @@ process.on('uncaughtException', (err) => {
 
 const app = express();
 
-const limiter = rateLimit({ windowMs: 15*60*1000, max: 500, message: { success: false, message: 'Too many requests.' } });
-const authLimiter = rateLimit({ windowMs: 15*60*1000, max: 20, message: { success: false, message: 'Too many auth attempts.' } });
+const limiter = rateLimit({ windowMs: 15*60*1000, max: 500, message: { error: true, message: 'Too many requests' } });
+const authLimiter = rateLimit({ windowMs: 15*60*1000, max: 20, message: { error: true, message: 'Too many auth attempts' } });
 
 const corsWhitelist = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(s => s.trim()) : ['http://localhost:3000'];
 app.use(cors({
@@ -52,24 +52,26 @@ async function startServer() {
 
   app.use('/api/auth', authLimiter, require('./routes/auth'));
   app.use('/api/projects', require('./routes/projects'));
+  app.use('/api/projects/:projectId/tasks', require('./routes/tasks'));
   app.use('/api/tasks', require('./routes/tasks'));
   app.use('/api/dashboard', require('./routes/dashboard'));
+  app.use('/api/notifications', require('./routes/notifications'));
 
   app.get('/api/health', (req, res) => {
-    res.json({ success: true, message: 'TaskFlow API running!', version: '1.0.0', timestamp: new Date().toISOString() });
+    res.json({ status: 'ok' });
   });
 
   app.get('*', (req, res) => {
     if (!req.path.startsWith('/api')) {
       res.sendFile(path.join(__dirname, '../public/index.html'));
     } else {
-      res.status(404).json({ success: false, message: 'Route not found.' });
+      res.status(404).json({ error: true, message: 'Route not found' });
     }
   });
 
   app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
-    res.status(500).json({ success: false, message: 'Internal server error.' });
+    res.status(500).json({ error: true, message: 'Internal server error' });
   });
 
   const PORT = process.env.PORT || 3000;
