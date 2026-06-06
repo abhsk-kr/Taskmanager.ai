@@ -16,7 +16,19 @@ const app = express();
 const limiter = rateLimit({ windowMs: 15*60*1000, max: 500, message: { success: false, message: 'Too many requests.' } });
 const authLimiter = rateLimit({ windowMs: 15*60*1000, max: 20, message: { success: false, message: 'Too many auth attempts.' } });
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
+const corsWhitelist = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(s => s.trim()) : ['http://localhost:3000'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || corsWhitelist.includes('*') || corsWhitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
